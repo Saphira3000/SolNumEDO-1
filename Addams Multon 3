@@ -1,0 +1,25 @@
+function y=AM3(f,x,y0)
+%AM3 versión epsilón(método de órden 3)
+    h=x(2)-x(1); %Tamaño de paso
+    y=y0(:); %Inicializa
+    n=length(x);
+    opcion=optimset('Display','off');
+    ytemp=GL4(f,[x(1) x(2) x(3)],y0);
+    y1=ytemp(:,2);
+    ytemp=GL4(f,[x(1) x(2) x(3)],y1);
+    y(:,2:3)=ytemp(:,1:2); 
+    y2=ytemp(:,2);
+    ytemp=GL4(f,[x(1) x(2) x(3)],y2);
+    y(:,4)=ytemp(:,2);
+    %Aquí incluímos el valor de la inicialización con Gauss-Legendre
+    for i=4:n
+        xtemp=x(i); ytemp=y(:,i-1);
+        xtomp=x(i-1); ytomp=y(:,i-2);
+        xtimp=x(i-2); ytimp=y(:,i-3);
+        xtump=x(i-3);
+        F=@(z) h*(f(xtemp,z)-5*f(xtomp,ytemp)+19*f(xtimp,ytomp)+...
+            9*f(xtump,ytimp))/24+ytimp-z;
+        y(:,i)=fsolve(F,ytimp,opcion);
+
+    end
+end
