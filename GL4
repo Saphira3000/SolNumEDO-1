@@ -1,3 +1,6 @@
+# Método de Gauss-Legendre 4
+## Vectorial
+### Recibe: ode(función), x(vector con cierto tamaño de paso), y0(condición inicial)
 function [y,x]=GL4(ode,x,y0)
 %ode = f
 %Gauss-Legendre orden 4 versión epsilón
