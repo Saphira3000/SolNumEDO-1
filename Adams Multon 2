@@ -1,0 +1,22 @@
+function [y]=AM2(f,x,y0)
+%Adams Moulton 2 modificado 3 entradas
+%Gabriela Sanchez Y.
+
+h=x(2)-x(1); %Tamaño de paso
+y=y0(:); %Inicializa
+n=length(x);
+
+opcion=optimset('Display','off');
+
+yt=RK3(f,x(1:2),y0);
+y(:,2)=yt(:,2); %Primer paso runge-kutta de orden 3
+
+for i=3:n
+    xt2 = x(i);
+    xt1 = x(i-1);
+    xt = x(i-2);
+    yt2 = y(:,i-1);
+    yt1 = y(:,i-2);
+    F = @(z) yt2 + h*((5/12)*f(xt2,z) + (2/3)*f(xt1,yt2) - (1/12)*f(xt,yt1)) - z;
+    y(:,i) = fsolve(F,yt1,opcion);
+end
