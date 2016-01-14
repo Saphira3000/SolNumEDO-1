@@ -1,0 +1,15 @@
+function [y]=eulerb(f,x,y0)
+%Euler hacia atrás versión vectorial
+
+h=x(2)-x(1); %Tamaño de paso
+y=y0(:); %Inicializa
+n=length(x);
+
+opcion=optimset('Display','off');
+
+for i=2:n
+    xtemp=x(i);
+    ytemp=y(:,i-1);
+    F=@(z) h*f(xtemp,z)+ytemp-z;
+    y(:,i)=fsolve(F,ytemp,opcion); %Euler hacia atrás
+end
