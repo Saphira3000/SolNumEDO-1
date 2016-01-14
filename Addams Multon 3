@@ -1,4 +1,4 @@
-function [y]=AM32(f,x,y0)
+function [y]=AM3(f,x,y0)
 %Adams Moulton 3
 %modificado tres entradas
 %Gabriela Sanchez Y.
