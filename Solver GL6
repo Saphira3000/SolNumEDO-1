@@ -1,0 +1,13 @@
+function [y,fcnt] = mrk6(ode,tspan,y0)
+%ODE linear solver
+%global fcnt %variables globales
+fcnt=0;
+nl=length(tspan); %pasa vector de las t's
+s=3; %steps
+tol=1e-4; 
+y(:,1)=y0;
+for i=2:nl
+    yt=rk6(ode,tspan([i-1 i]),y(:,i-1));
+    y(:,i)=yt(:,2);
+end
+%y=y(:);
