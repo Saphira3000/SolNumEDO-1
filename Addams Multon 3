@@ -1,25 +1,22 @@
-function y=AM3(f,x,y0)
-%AM3 versión epsilón(método de órden 3)
-    h=x(2)-x(1); %Tamaño de paso
-    y=y0(:); %Inicializa
-    n=length(x);
-    opcion=optimset('Display','off');
-    ytemp=GL4(f,[x(1) x(2) x(3)],y0);
-    y1=ytemp(:,2);
-    ytemp=GL4(f,[x(1) x(2) x(3)],y1);
-    y(:,2:3)=ytemp(:,1:2); 
-    y2=ytemp(:,2);
-    ytemp=GL4(f,[x(1) x(2) x(3)],y2);
-    y(:,4)=ytemp(:,2);
-    %Aquí incluímos el valor de la inicialización con Gauss-Legendre
-    for i=4:n
-        xtemp=x(i); ytemp=y(:,i-1);
-        xtomp=x(i-1); ytomp=y(:,i-2);
-        xtimp=x(i-2); ytimp=y(:,i-3);
-        xtump=x(i-3);
-        F=@(z) h*(f(xtemp,z)-5*f(xtomp,ytemp)+19*f(xtimp,ytomp)+...
-            9*f(xtump,ytimp))/24+ytimp-z;
-        y(:,i)=fsolve(F,ytimp,opcion);
+function [y]=AM32(f,x,y0)
+%Adams Moulton 3
+%modificado tres entradas
+%Gabriela Sanchez Y.
 
-    end
+h = x(2) - x(1);
+y=y0(:); %Inicializa
+n=length(x);
+
+opcion=optimset('Display','off');
+
+yt=RK42(f,x(1:3),y0);
+y(:,2:3)=yt(:,2:3); %Primer paso runge-kutta de orden 4
+
+for i=4:n
+    yt3 = y(:,i-1);
+    yt2 = y(:,i-2);
+    yt1 = y(:,i-3);
+    F = @(z) yt3 + h*((3/8)*f(x(i),z) + (19/24)*f(x(i-1),yt3) - (5/24)*f(x(i-2),yt2)+...
+        (1/24)*f(x(i-3),yt1)) - z;
+    y(:,i) = fsolve(F,yt1,opcion);
 end
