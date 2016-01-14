@@ -1,0 +1,15 @@
+function [y,x]=trapos2(f,x,y0)
+%Trapecios version epsilon
+
+h=x(2)-x(1); %Tamaño de paso
+y=y0(:); %Inicializa
+n=length(x);
+
+opcion=optimset('Display','off');
+
+for i=2:n
+    xtemp=x(i);ytemp=y(:,i-1);
+    xtomp=x(i-1);
+    F=@(z) h*(f(xtemp,z)+f(xtomp,ytemp))/2+ytemp-z;
+    y(:,i)=fsolve(F,ytemp,opcion); 
+end
