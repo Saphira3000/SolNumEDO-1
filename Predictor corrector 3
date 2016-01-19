@@ -1,0 +1,19 @@
+function [y]=PC3(f,x,y0)
+%Predictor corrector 3
+
+h=x(2)-x(1); %Tamaño de paso
+y=y0(:); %Inicializa
+n=length(x);
+
+opcion=optimset('Display','off');
+
+ytemp=RK42(f,x,y0);
+y(:,2:3)=ytemp(:,2:3); %Aquí incluímos el valor de la inicialización con Runge-Kutta de orden 4
+
+for i=4:n
+    yt=y(:,i-1)+h*(23*f(x(i-1),y(:,i-1))/12-4*f(x(i-2),y(:,i-2))/3+...
+        5*f(x(i-3),y(:,i-3))/12); %AB3
+    y(:,i)=y(:,i-1)+h*((3/8)*f(x(i),yt)+(19/24)*f(x(i-1),y(:,i-1))-...
+        (5/24)*f(x(i-2),y(:,i-2))+(1/24)*f(x(i-3),y(:,i-3)));
+end
+end
