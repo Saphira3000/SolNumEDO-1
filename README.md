@@ -1,5 +1,5 @@
 # Solución Numércia de EDO
-## En esta carpeta se encuentran diferentes métodos para la aproximación de solución numérica de ecuadiones diferenciales
+## En esta carpeta se encuentran diferentes métodos para la solución numérica de ecuaciones diferenciales ordinarias
 ### min sub
 * Negritas *
 _cursiva_
